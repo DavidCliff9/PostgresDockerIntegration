@@ -1,0 +1,4 @@
+
+CREATE USER medadmin WITH PASSWORD :'medadmin_pass';
+CREATE USER userapplication WITH PASSWORD :'userapplication_pass';
+CREATE USER gpapplication WITH PASSWORD :'gpapplication_pass';
