@@ -1,4 +1,3 @@
-
-CREATE USER medadmin WITH PASSWORD :'medadmin_pass';
-CREATE USER userapplication WITH PASSWORD :'userapplication_pass';
-CREATE USER gpapplication WITH PASSWORD :'gpapplication_pass';
+CREATE USER medadmin WITH PASSWORD '${MEDADMIN_PASS}';
+CREATE USER userapplication WITH PASSWORD '${USERAPPLICATION_PASS}';
+CREATE USER gpapplication WITH PASSWORD '${GPAPPLICATION_PASS}';
