@@ -36,7 +36,7 @@ WHERE rolname = 'GPApplication';
 
 
 IF (MedAdminChk = 0) THEN 
-EXECUTE 'CREATE USER medadmin WITH PASSWORD ''password'';';
+EXECUTE 'CREATE USER medadmin WITH PASSWORD ${POSTGRESPASSWORD};';
 END IF;
 
 
