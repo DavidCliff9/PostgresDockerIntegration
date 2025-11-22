@@ -1,7 +1,9 @@
+version: "3.9"
+
 services:
   pg:
     container_name: pg
-    image: postgres
+    image: postgres:16
     restart: always
     shm_size: 128mb
     environment:
@@ -12,15 +14,14 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       PGDATA: /data/postgres
     volumes:
-#Database files for even the docker container is down
+      # Database files for persistence
       - ./db:/data/postgres
-#to run scripts 
+      # SQL scripts to run at container initialization
       - ./init:/docker-entrypoint-initdb.d
-
     ports:
-      - 5000:5000
+      - 5432:5432
     networks:
-        - backend
+      - backend
 
   adminer:
     container_name: adminer
@@ -29,8 +30,7 @@ services:
     ports:
       - 8080:8080
     networks:
-	- backend
+      - backend
 
 networks:
-    backend:
-
+  backend:
