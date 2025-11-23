@@ -2,7 +2,7 @@
 ## Details
 The docker compose file will create the docker container with postgres. The docker image of postgres has a feature that will run scripts on first creation. The scripts are found in the init folder.
 ### run docker in EC2
-When using an EC2, connect an IAM role to the EC2 to have access to the secret manager and attach the AWSDockerInstall Script, or else supply it through wget 
+When using an EC2, connect an IAM role to the EC2 to have access to the secret manager and attach the AWSDockerInstall Script, or else supply it through wget https://raw.githubusercontent.com/DavidCliff9/PostgresDockerIntegration/refs/heads/main/AWSDockerInstall.sh and run it in the EC2 CLI
 ### connecting to the container
 run the command `sudo docker exec -it pg psql -U postgres -d medicalsuite` to connect to the container. change the username or database when needed, for example change `-U postgres` to `-U medadmin`
 ### show tables and db
