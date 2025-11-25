@@ -14,6 +14,8 @@ git clone https://github.com/DavidCliff9/PostgresDockerIntegration
 sudo systemctl start docker
 sudo systemctl enable docker
 
+cd PostgresDockerIntegration
+
 # Retrieve the aws secrets into a variable, parse the secret json by name and export as an enviornmental variable
 SECRET=$(aws secretsmanager get-secret-value --secret-id proto/docker/manager --query SecretString --output text)
 
@@ -23,8 +25,6 @@ export GPAPPLICATION_PASS=$(echo $SECRET | jq -r '.gpapplication')
 
 # Use the sql.template to inject the enviornmental variables into the create users script
 envsubst < init/01declareusers.sql.template > init/01declareusers.sql
-
-cd PostgresDockerIntegration
 
 # Give the ec2 permissions to run the docker file
 sudo usermod -a -G docker ec2-user
