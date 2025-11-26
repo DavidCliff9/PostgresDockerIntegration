@@ -1,59 +1,15 @@
--- This code creates the medical suite Database 
+-- This code creates the medical suite Database for use with a docker container
 
 -- 1. Check for users and create the database
 
 DO
 $$	
--- Data Declaration
-DECLARE	
-MedAdminChk SMALLINT;
-UserAppChk SMALLINT;
-GPAppChk SMALLINT;	
 BEGIN
 
--- Check Users by selecting against
-
-
-	
-/*SELECT COUNT(rolname) 
-INTO MedAdminChk
-FROM pg_roles
-WHERE rolname = 'medadmin';
-
-SELECT COUNT(rolname)
-INTO UserAppChk
-FROM pg_roles 
-WHERE rolname = 'UserApplication';
-
-SELECT COUNT(rolname)
-INTO GPAppChk
-FROM pg_roles 
-WHERE rolname = 'GPApplication'; 
-
--- Create Users and Database if not created
--- Tells the PSQL block to execute SQL Commands
-
-
-
-IF (MedAdminChk = 0) THEN 
-EXECUTE 'CREATE USER medadmin WITH PASSWORD ${POSTGRESPASSWORD};';
-END IF;
-
-
-
-/*
-IF (UserAppChk = 0) THEN
-CREATE USER UserApplication WITH PASSWORD 'password';  
-END IF;
-
-IF (GPAppChk = 0) THEN 
-CREATE USER GPApplication WITH PASSWORD 'password';  
-END IF;
-
-*/
+-- Section from a previous Install Script.
 
 END;
-$$; */
+$$; 
 
 -- This is a psql variable. It will execute this search and store it for use within the script. -T no header, -A unaligned and -C run command
 
@@ -222,4 +178,3 @@ ALTER SCHEMA admin OWNER TO medadmin;
 
 SELECT create_api_test();
 SELECT create_med_tables();
-
