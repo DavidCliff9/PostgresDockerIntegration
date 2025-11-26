@@ -15,7 +15,7 @@ BEGIN
 
 
 	
-SELECT COUNT(rolname) 
+/*SELECT COUNT(rolname) 
 INTO MedAdminChk
 FROM pg_roles
 WHERE rolname = 'medadmin';
@@ -28,7 +28,7 @@ WHERE rolname = 'UserApplication';
 SELECT COUNT(rolname)
 INTO GPAppChk
 FROM pg_roles 
-WHERE rolname = 'GPApplication';
+WHERE rolname = 'GPApplication'; 
 
 -- Create Users and Database if not created
 -- Tells the PSQL block to execute SQL Commands
@@ -53,7 +53,7 @@ END IF;
 */
 
 END;
-$$;
+$$; */
 
 -- This is a psql variable. It will execute this search and store it for use within the script. -T no header, -A unaligned and -C run command
 
@@ -68,7 +68,7 @@ CREATE SCHEMA IF NOT EXISTS records;
 CREATE SCHEMA IF NOT EXISTS gp;
 CREATE SCHEMA IF NOT EXISTS accounts;
 CREATE SCHEMA IF NOT EXISTS patients;
-
+CREATE SCHEMA IF NOT EXISTS admin;
 
 -- 3. Create Tables and where valid, indexes
 
@@ -138,6 +138,14 @@ CONSTRAINT fk_gp_record_id
     REFERENCES GP.gp (Gp_Id)
     ON DELETE RESTRICT -- Prevent Deletion of a GP WITH records
         );	
+
+CREATE TABLE IF NOT EXISTS admin.errorlog (
+ -- Allows the incrementation of Primary Key
+Error_Id SERIAL PRIMARY KEY,
+Error_msg VARCHAR(500),
+ -- If no value is entered, use the default timestamp
+Created_At TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+        );	
         
 -- 4. Insert Data using earlier check
 
@@ -191,13 +199,24 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA records TO medadmin
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA accounts TO medadmin;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA gp TO medadmin;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA patients TO medadmin;
+GRANT USAGE, SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA admin TO medadmin;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA patients TO medadmin;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA accounts TO medadmin;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA gp TO medadmin;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA records TO medadmin;
 
--- Finish Other Users (PlaceHolder)
+GRANT SELECT ON ALL TABLES IN SCHEMA records TO userapplication;
+GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA accounts TO userapplication;
+GRANT SELECT ON ALL TABLES IN SCHEMA gp TO userapplication;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA patients TO userapplication;
+GRANT INSERT ON ALL TABLES IN SCHEMA admin TO userapplication;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA patients TO userapplication;
 
 ALTER SCHEMA records OWNER TO medadmin;
 ALTER SCHEMA accounts OWNER TO medadmin;
 ALTER SCHEMA gp OWNER TO medadmin;
 ALTER SCHEMA patients OWNER TO medadmin;
+ALTER SCHEMA admin OWNER TO medadmin;
 
 -- Insert Test Data into Tables
 
