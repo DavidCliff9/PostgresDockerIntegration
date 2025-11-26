@@ -1,10 +1,11 @@
 -- This Function will insert details once it passes checks from the stored procedure its called
 
-CREATE OR REPLACE FUNCTION add_record_details(EPatientEmail VARCHAR(50),
-EGPFirstName VARCHAR(50),
-EGPLastName VARCHAR(50),
-ERecordDetails TEXT,
-EPractice VARCHAR(50))
+CREATE OR REPLACE FUNCTION add_patient_details(EFirstName VARCHAR(50), 
+ELastName VARCHAR(50),
+EGENDER VARCHAR(10), 
+EEmail VARCHAR(50),
+EPassword VARCHAR(255)
+)
 
 -- Return int to master procedure
 
@@ -19,18 +20,18 @@ return_msg int;
 
 BEGIN
 
--- Insert into records table
+INSERT INTO accounts.users_accounts (email, password_hash)
+VALUES (EEmail, EPassword)
+  
+-- Insert into patient table
 
-INSERT INTO records.records (User_Id, GP_Id, Record_Details, Practice)
--- Using Subqueries to find the relevant foreign keys to insert into the table from Email and Names
-VALUES ((SELECT User_Id FROM patients.patients WHERE Email=EPatientEmail),
-(SELECT Gp_Id FROM gp.gp WHERE First_Name=EGPFirstName AND Last_Name=EGPLastName),
-ERecordDetails, EPractice)
+INSERT INTO patients.patients (first_name, last_name, gender, email)
+VALUES (EFirstName, ELastName, EGender, EEmail)
 RETURNING user_id INTO return_msg;
 
 -- Return a message
 
-RETURN return_msg;
+RETURN return_msg; 
 
 END;
 $$;
